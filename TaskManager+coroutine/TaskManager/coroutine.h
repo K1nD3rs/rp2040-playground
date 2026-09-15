@@ -17,14 +17,23 @@ public:
     
 // ! вернуть управление, продолжить позже с этого места. 
 #define co_yield \
+    (co)->wake_time = 0;    \
     (co)->state = __LINE__; \
     return; \
     case __LINE__:
 
 // ! co_end — завершение корутины, сброс состояния в 0
 #define co_end \
+    (co)->state = 0; \
+    break; \
     } \
-    (co)->state = 0;
+    return;
+// ? ????
+
+/* // ! co_end — завершение корутины, сброс состояния в 0
+#define co_end \
+    } \
+    (co)->state = 0; */
 
 //! co_return — окончательно завершить корутину (state = -1)
 #define co_return \
@@ -61,3 +70,5 @@ public:
         return; \
         case __LINE__:; \
     }
+
+//? need to add co_await_until_or_timeout
